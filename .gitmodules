@@ -1,0 +1,3 @@
+[submodule "3rd/divinus"]
+	path = 3rd/divinus
+	url = https://github.com/OpenIPC/divinus.git
