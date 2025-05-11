@@ -295,7 +295,7 @@ int enable_audio(void) {
     return ret;
 }
 
-int disable_mp4(void) {
+int disable_H26X(void) {
     int ret;
 
     for (char i = 0; i < chnCount; i++) {
