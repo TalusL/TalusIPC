@@ -20,6 +20,6 @@ include_directories(3rd/ZLMediaKit/3rdpart/ZLToolKit/src)
 
 add_executable(TalusIPC
         src/main.cpp
-        src/media.c
+        src/media.cpp
 )
 target_link_libraries(TalusIPC hal zlmediakit)

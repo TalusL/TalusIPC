@@ -8,8 +8,11 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-
+extern "C"{
+#include <hal/types.h>
 #include "error.h"
+}
+
 
 
 typedef struct HALConfig_ {
@@ -23,9 +26,9 @@ typedef struct HALConfig_ {
     unsigned int video_height;
     char sensor_config[128];
     unsigned long long encoding_bitrate;
-    unsigned int encoding_codec;
-    unsigned int encoding_mode;
-    unsigned int encoding_profile;
+    hal_vidcodec encoding_codec;
+    hal_vidmode encoding_mode;
+    hal_vidprofile encoding_profile;
     unsigned int encoding_gop;
 } HALConfig;
 

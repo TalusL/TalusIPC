@@ -1,6 +1,6 @@
 #include "media.h"
-#include <stdint.h>
-#include <hal/types.h>
+
+
 
 char audioOn = 0;
 pthread_mutex_t chnMtx;
@@ -21,7 +21,7 @@ HALConfig app_config = {
     1024,
     HAL_VIDCODEC_H265,
     HAL_VIDMODE_CBR,
-    2,
+    HAL_VIDPROFILE_BASELINE,
     40,
 };
 
@@ -148,6 +148,7 @@ int create_channel(char index, short width, short height, char framerate, char j
             app_config.mirror, app_config.flip);
 #endif
     }
+    return EXIT_FAILURE;
 }
 
 int bind_channel(char index, char framerate, char jpeg) {
@@ -170,6 +171,7 @@ int bind_channel(char index, char framerate, char jpeg) {
         case HAL_PLATFORM_CVI: return cvi_channel_bind(index);
 #endif
     }
+    return EXIT_FAILURE;
 }
 
 int unbind_channel(char index, char jpeg) {
@@ -192,6 +194,7 @@ int unbind_channel(char index, char jpeg) {
         case HAL_PLATFORM_CVI: return cvi_channel_unbind(index);
 #endif
     }
+    return EXIT_FAILURE;
 }
 
 int disable_video(char index, char jpeg) {

@@ -1,10 +1,8 @@
 #include <iostream>
 
 #include "Util/logger.h"
-
-extern "C"{
 #include "media.h"
-}
+
 
 using namespace std;
 using namespace toolkit;
