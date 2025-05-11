@@ -18,8 +18,11 @@ int main() {
 
     hal_identify();
 
-    if (!*family)
+    if (!*family) {
         ErrorL<<"Unsupported chip family! Quitting...";
+        return -1;
+    }
+
 
 
     auto rtspSrv = std::make_shared<TcpServer>();
