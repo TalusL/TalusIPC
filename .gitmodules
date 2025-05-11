@@ -1,3 +1,6 @@
 [submodule "3rd/divinus"]
 	path = 3rd/divinus
-	url = https://github.com/OpenIPC/divinus.git
+	url = https://github.com/TalusL/divinus.git
+[submodule "3rd/ZLMediaKit"]
+	path = 3rd/ZLMediaKit
+	url = https://github.com/TalusL/ZLMediaKit.git
