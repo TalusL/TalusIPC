@@ -2,6 +2,8 @@
 
 #include "Util/logger.h"
 #include "media.h"
+#include "Network/TcpServer.h"
+#include "Rtsp/RtspSession.h"
 
 
 using namespace std;
@@ -13,12 +15,21 @@ int main() {
     Logger::Instance().add(std::make_shared<ConsoleChannel>("ConsoleChannel", LTrace));
     Logger::Instance().setWriter(std::make_shared<AsyncLogWriter>());
 
+
     hal_identify();
 
     if (!*family)
         HAL_ERROR("hal", "Unsupported chip family! Quitting...\n");
+
+
+    auto rtspSrv = std::make_shared<TcpServer>();
+    rtspSrv->start<mediakit::RtspSession>(554);
+
+
     if (start_sdk())
         HAL_ERROR("hal", "Failed to start SDK!\n");
+
+
 
     static toolkit::semaphore sem;
     signal(SIGINT, [](int) {
@@ -28,5 +39,7 @@ int main() {
     }); // 设置退出信号
 
     sem.wait();
+
+    sleep(2);
     return 0;
 }

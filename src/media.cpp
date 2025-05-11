@@ -1,5 +1,10 @@
 #include "media.h"
 
+#include "Common/macros.h"
+#include "Common/MultiMediaSourceMuxer.h"
+#include "Extension/Factory.h"
+
+using namespace mediakit;
 
 
 char audioOn = 0;
@@ -26,21 +31,58 @@ HALConfig app_config = {
 };
 
 
+MediaTuple media_info = {
+    DEFAULT_VHOST,
+    "live",
+    "main"
+};
+
+std::shared_ptr<MultiMediaSourceMuxer> main_muxer;
+
+void initMainMuxer() {
+    ProtocolOption p;
+    p.enable_audio = app_config.audio_enable;
+    p.enable_fmp4 = false;
+    p.enable_hls = false;
+    p.enable_mp4 = false;
+    p.enable_rtmp = false;
+    p.enable_ts = false;
+    p.add_mute_audio = false;
+    main_muxer = std::make_shared<MultiMediaSourceMuxer>(media_info,0.0f,p);
+    auto vTrack =  Factory::getTrackByCodecId(app_config.encoding_codec == HAL_VIDCODEC_H265?CodecH265:CodecH264);
+    main_muxer->addTrack(vTrack);
+    if (app_config.audio_enable) {
+        auto aTrack =  Factory::getTrackByCodecId(CodecG711A);
+        main_muxer->addTrack(aTrack);
+    }
+    main_muxer->addTrackCompleted();
+}
+
 int save_audio_stream(hal_audframe *frame) {
+    if (!main_muxer) {
+        initMainMuxer();
+    }
      int ret = EXIT_SUCCESS;
      return ret;
 }
 
 int save_video_stream(char index, hal_vidstream *stream) {
+    if (!main_muxer) {
+        initMainMuxer();
+    }
     switch (chnState[index].payload) {
         case HAL_VIDCODEC_H264:
         case HAL_VIDCODEC_H265: {
             char isH265 = chnState[index].payload == HAL_VIDCODEC_H265 ? 1 : 0;
             for (unsigned int i = 0; i < stream->count; ++i) {
-                hal_vidpack *pack = &stream->pack[i];
-                unsigned int pack_len = pack->length - pack->offset;
-                unsigned char *pack_data = pack->data + pack->offset;
-                HAL_INFO("media","Got Frame. %s %d\n",isH265?"H265":"H264",pack_len);
+                unsigned int pack_len = stream->pack[i].length - stream->pack[i].offset;
+                unsigned char *pack_data = stream->pack[i].data + stream->pack[i].offset;
+                auto pts = toolkit::getCurrentMillisecond();
+                auto frame = Factory::getFrameFromPtr(isH265?CodecH265:CodecH264, (char *)pack_data, pack_len, pts, pts);
+                main_muxer->getOwnerPoller(MediaSource::NullMediaSource())->async([frame]() {
+                    if (main_muxer)
+                        main_muxer->inputFrame(frame);
+                });
             }
         }
         default: ;

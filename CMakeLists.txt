@@ -13,6 +13,10 @@ add_library(hal ${DIVINUS_SRC_LIST})
 include_directories(3rd/divinus/src/)
 
 set(ENABLE_TESTS OFF CACHE BOOL "")
+set(ENABLE_MP4 OFF CACHE BOOL "")
+set(ENABLE_SRT OFF CACHE BOOL "")
+set(ENABLE_HLS OFF CACHE BOOL "")
+set(ENABLE_MP4 OFF CACHE BOOL "")
 add_subdirectory(3rd/ZLMediaKit)
 
 include_directories(3rd/ZLMediaKit/src)
@@ -22,4 +26,4 @@ add_executable(TalusIPC
         src/main.cpp
         src/media.cpp
 )
-target_link_libraries(TalusIPC hal zlmediakit)
+target_link_libraries(TalusIPC hal zlmediakit ext-codec)
