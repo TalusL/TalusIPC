@@ -19,15 +19,17 @@ int main() {
     hal_identify();
 
     if (!*family)
-        HAL_ERROR("hal", "Unsupported chip family! Quitting...\n");
+        ErrorL<<"Unsupported chip family! Quitting...";
 
 
     auto rtspSrv = std::make_shared<TcpServer>();
     rtspSrv->start<mediakit::RtspSession>(554);
 
 
-    if (start_sdk())
-        HAL_ERROR("hal", "Failed to start SDK!\n");
+    if (start_sdk()) {
+        ErrorL<< "Failed to start SDK!";
+        return -1;
+    }
 
 
 

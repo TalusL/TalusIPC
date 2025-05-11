@@ -19,15 +19,15 @@ HALConfig app_config = {
     8000,
     false,
     10,
-    15,
+    25,
     1920,
     1080,
     "/etc/sensors/imx415.bin",
-    1024,
+    4096,
     HAL_VIDCODEC_H265,
     HAL_VIDMODE_CBR,
     HAL_VIDPROFILE_BASELINE,
-    40,
+    25,
 };
 
 
