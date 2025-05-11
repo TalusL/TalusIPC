@@ -610,6 +610,7 @@ int start_sdk(void) {
 }
 
 int stop_sdk(void) {
+    keepRunning = false;
     pthread_join(vidPid, NULL);
 
 

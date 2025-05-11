@@ -40,6 +40,8 @@ int main() {
 
     sem.wait();
 
+    stop_sdk();
+
     sleep(2);
     return 0;
 }
