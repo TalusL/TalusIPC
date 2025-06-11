@@ -49,6 +49,7 @@ _✔️ - supported, ↻ - in development, ✗ - unsupported, ⁿ/ₐ - not supp
   - 服务管理 适配中
   - 任务计划 适配中
 - 接入协议
+  - SIP 适配中
   - GB/T 28181 适配中
   - Onvif 适配中
   - RTMP、RTSP、WHIP、SRT推流 适配中
