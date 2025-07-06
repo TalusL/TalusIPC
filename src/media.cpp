@@ -34,7 +34,7 @@ HALConfig app_config = {
 MediaTuple media_info = {
     DEFAULT_VHOST,
     "live",
-    "main"
+    "MainStream"
 };
 
 std::shared_ptr<MultiMediaSourceMuxer> main_muxer;
