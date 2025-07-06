@@ -353,7 +353,7 @@ void handle_GetServices(BroadcastHttpRequestArgs) {
     std::string ptzUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/ptz_service";
     std::string mediaUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/media_service";
     std::string deviceIOUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/deviceIO_service";
-    std::string media2Url = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/media_service";
+    std::string media2Url = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/media_service2";
     sprintf(resp,servicexml.c_str(),
     deviceUrl.c_str(),
     eventsUrl.c_str(),
