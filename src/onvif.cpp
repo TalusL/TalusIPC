@@ -363,7 +363,6 @@ void handle_GetServices(BroadcastHttpRequestArgs) {
     media2Url.c_str()
     );
     invoker(200,soapDefaultHeader,removeXmlWhitespace(resp));
-    invoker(501,{},"");
 }
 void handle_GetConfigurations(BroadcastHttpRequestArgs) {
     WarnL<<__FUNCTION__<<" Not Implemented";
