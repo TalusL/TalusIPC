@@ -6,6 +6,14 @@
 #define ONVIFXML_H
 
 
+const std::string gethostnamexml = R"(<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+  <s:Body>
+    <GetHostnameResponse xmlns="http://www.onvif.org/ver10/device/wsdl">
+      <TroyName>%s</TroyName>
+    </GetHostnameResponse>
+  </s:Body>
+</s:Envelope>)";
+
 const std::string capabilitiesxml = R"(<?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:tds="http://www.onvif.org/ver10/device/wsdl" xmlns:tt="http://www.onvif.org/ver10/schema">
   <SOAP-ENV:Body>

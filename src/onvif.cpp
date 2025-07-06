@@ -391,6 +391,12 @@ void handle_PtzStop(BroadcastHttpRequestArgs) {
     invoker(501,{},"");
 }
 
+void handle_GetHostname(BroadcastHttpRequestArgs) {
+    char resp[4096] = {};
+    sprintf(resp,gethostnamexml.c_str(),VENDOR);
+    invoker(200,{},removeXmlWhitespace(resp));
+}
+
 // Action 映射表
 using request_handler = void(*)(BroadcastHttpRequestArgs);
 static std::unordered_map<std::string, request_handler> s_cmd_functions;
@@ -404,6 +410,7 @@ static onceToken token([]() {
     s_cmd_functions.emplace("GetVideoSources", handle_GetVideoSources);
     s_cmd_functions.emplace("GetEndpointReference", handle_GetEndpointReference);
     s_cmd_functions.emplace("GetServices", handle_GetServices);
+    s_cmd_functions.emplace("GetHostname", handle_GetHostname);
     s_cmd_functions.emplace("GetConfigurations", handle_GetConfigurations);
     s_cmd_functions.emplace("GetAudioOutputConfigurations", handle_GetAudioOutputConfigurations);
     s_cmd_functions.emplace("GetMoveOptions", handle_GetMoveOptions);
