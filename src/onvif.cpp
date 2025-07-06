@@ -121,7 +121,7 @@ bool onvif_validate_soap_auth(const std::string& xml) {
 
 
 
-int ug_start_discovery_server() {
+int start_discovery_server() {
     // 初始化 onvif 发现服务
     onvifDiscoverSrv = Socket::createSocket();
     if (!onvifDiscoverSrv->bindUdpSock(ONVIF_DISCOVERY_PORT)) {
@@ -129,12 +129,6 @@ int ug_start_discovery_server() {
     }
 
     std::string localIp = SockUtil::get_local_ip();
-    ip_mreq mr{};
-    mr.imr_multiaddr.s_addr = inet_addr(ONVIF_DISCOVERY_MULTI_CAST_ADDR);
-    mr.imr_interface.s_addr = inet_addr(localIp.c_str());
-    if (setsockopt(onvifDiscoverSrv->rawFD(), IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &mr, sizeof(mr)) == -1) {
-        return EXIT_FAILURE;
-    }
 
     std::string uuid = uuid_generate();
     std::string msg_uuid = uuid_generate();
@@ -173,6 +167,12 @@ int ug_start_discovery_server() {
         auto target = SockUtil::make_sockaddr(ONVIF_DISCOVERY_MULTI_CAST_ADDR,ONVIF_DISCOVERY_PORT);
         onvifDiscoverSrv->send(removeXmlWhitespace(match),(sockaddr*)&target);
     });
+    ip_mreq mr{};
+    mr.imr_multiaddr.s_addr = inet_addr(ONVIF_DISCOVERY_MULTI_CAST_ADDR);
+    mr.imr_interface.s_addr = inet_addr(localIp.c_str());
+    if (setsockopt(onvifDiscoverSrv->rawFD(), IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &mr, sizeof(mr)) == -1) {
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
 
@@ -412,7 +412,7 @@ std::string onvif_extract_soap_action(const std::string& xml) {
 }
 
 
-int ug_start_http_server() {
+int start_http_server() {
 
     // 关闭http服务器的目录浏览功能
     mINI::Instance()[Http::kDirMenu] = false;
@@ -470,11 +470,16 @@ int start_onvif_server() {
 
     soapDefaultHeader["Content-Type"] = "application/soap+xml";
 
-    if (ug_start_discovery_server()) {
-        return EXIT_FAILURE;
-    }
+    toolkit::WorkThreadPool::Instance().getPoller()->doDelayTask(10*1000,[]() {
+        if (start_discovery_server()) {
+            return EXIT_FAILURE;
+        }
+        return 0;
+    });
 
-    if (ug_start_http_server()) {
+
+
+    if (start_http_server()) {
         return EXIT_FAILURE;
     }
 
