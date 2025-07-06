@@ -1,5 +1,7 @@
 
 #include <cstdlib>
+#include <random>
+
 #include "Network/TcpServer.h"
 #include "Network/Socket.h"
 #include "Http/HttpSession.h"
@@ -45,7 +47,8 @@ std::string uuid_generate() {
         if (i == 8 || i == 13 || i == 18 || i == 23) {
             uuid[i] = '-';
         } else {
-            uuid[i] = chars[toolkit::getCurrentMicrosecond() % 16];
+            std::mt19937 rng(std::random_device{}());
+            uuid[i] = chars[rng() % 16];
         }
     }
     uuid[36] = '\0';
