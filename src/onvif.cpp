@@ -45,7 +45,7 @@ std::string uuid_generate() {
         if (i == 8 || i == 13 || i == 18 || i == 23) {
             uuid[i] = '-';
         } else {
-            uuid[i] = chars[rand() % 16];
+            uuid[i] = chars[toolkit::getCurrentMicrosecond() % 16];
         }
     }
     uuid[36] = '\0';
