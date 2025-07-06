@@ -4,6 +4,7 @@
 #include "media.h"
 #include "Network/TcpServer.h"
 #include "Rtsp/RtspSession.h"
+#include "onvif.h"
 
 
 using namespace std;
@@ -34,6 +35,7 @@ int main() {
         return -1;
     }
 
+    start_onvif_server();
 
 
     static toolkit::semaphore sem;
