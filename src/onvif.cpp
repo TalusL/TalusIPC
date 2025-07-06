@@ -345,7 +345,24 @@ void handle_GetEndpointReference(BroadcastHttpRequestArgs) {
     invoker(501,{},"");
 }
 void handle_GetServices(BroadcastHttpRequestArgs) {
-    WarnL<<__FUNCTION__<<" Not Implemented";
+    std::string localIp = SockUtil::get_local_ip();
+
+    char resp[4096] = {};
+    std::string deviceUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/device_service";
+    std::string eventsUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/event_service";
+    std::string ptzUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/ptz_service";
+    std::string mediaUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/media_service";
+    std::string deviceIOUrl = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/deviceIO_service";
+    std::string media2Url = StrPrinter<<"http://"<<localIp<<":"<<ONVIF_HTTP_PORT<<"/onvif/media_service";
+    sprintf(resp,servicexml.c_str(),
+    deviceUrl.c_str(),
+    eventsUrl.c_str(),
+    mediaUrl.c_str(),
+    ptzUrl.c_str(),
+    deviceIOUrl.c_str(),
+    media2Url.c_str()
+    );
+    invoker(200,soapDefaultHeader,removeXmlWhitespace(resp));
     invoker(501,{},"");
 }
 void handle_GetConfigurations(BroadcastHttpRequestArgs) {
